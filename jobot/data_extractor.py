@@ -1,8 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
 from tqdm import tqdm
-from jobot.config import insert_values
-from jobot.data_cleaner import clean_job_data
+from config import insert_values
+from data_cleaner import clean_job_data
 
 def getJobsByCategory(url: str):
     """

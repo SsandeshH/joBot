@@ -1,5 +1,5 @@
-from jobot.data_extractor import main_scraper
-from jobot.config import insert_values, conn
+from data_extractor import main_scraper
+from config import insert_values, conn
 
 def main():
     '''
