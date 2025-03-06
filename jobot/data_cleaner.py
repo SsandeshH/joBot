@@ -1,3 +1,4 @@
+# cleaning the data
 def clean_job_data(job_data):
     cleaned_data = {}
 
