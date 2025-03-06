@@ -43,11 +43,13 @@ A Chatbot system for Job Portal
     │
     ├── __init__.py             <- Makes jobot a Python module
     │
-    ├── config.py               <- Store useful variables and configuration
+    ├── config.py               <- PosgreS db Config file
     │
-    ├── dataset.py              <- Scripts to download or generate data
+    ├── data_cleaner            <- cleans the extracted data before sending it to db
+    |
+    ├── data_extractor.py       <- Scripts to Scrape data
     │
-    ├── features.py             <- Code to create features for modeling
+    ├── main.py                 <- Code to Run the Scripts
     │
     ├── modeling                
     │   ├── __init__.py 
