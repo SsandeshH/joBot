@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>joBot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;600;700;800;900&display=swap');
+
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: "Raleway", sans-serif;
+        }   
+        body{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            background-color: rgb(27, 26, 26);
+            color: white;
+        }
+
+        header{
+            margin: 10px;
+            border: 1px solid;
+            padding: 10px;
+            border-radius: 50px;
+        }
+
+        header:hover{
+            border-color: black;
+            color: black;
+            background-color: white;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .bodyContents{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            border-radius: 50px;
+            height: 18vh;
+            width: 80vw;
+            margin-top: 5vh;
+        }
+        .bodyContents:hover{
+            background-color: rgb(48, 48, 48);
+            transition: all 0.3s ease-in;
+        }
+        .text-and-send{
+            margin-top: 10px;
+            border-radius: 50px;
+            display: flex;
+            justify-content:space-evenly;
+            width: 73vw;
+            height: 10vh;
+            background-color: white;
+        }
+        .inp-field{
+            margin: 10px;
+            height: 6vh;
+            width: 55vw;
+            border-radius: 50px;
+            border: none;
+            font-size: x-large;
+        }
+        .inp-field:focus{
+            user-select: none;
+            outline: none;
+        }
+        .send-btn{
+            border-radius: 50px;
+            border: none;
+            background-color: white;
+            font-size: x-large; 
+            /* height: 40%; */
+            
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>joBot</h2>
+    </header>
+    <section class="bodyContents">
+        
+        <h1>Ask Me</h1>
+        <div class="text-and-send">
+            <input type="text" class="inp-field">
+            <button class="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+        <p class="response"></p>
+    </section>
+</body>
+</html>
