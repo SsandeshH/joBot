@@ -64,6 +64,8 @@ def index():
 def submit():
     user_query = request.form['inp-field'].strip().lower()
 
+    # Initialize empty context string
+    context = ""
     if is_job_related(user_query):
         # BM25 Scoring
         tokenized_query = word_tokenize(user_query)
@@ -73,41 +75,47 @@ def submit():
         top_bm25_indices = sorted(range(len(bm25_scores)), key=lambda i: bm25_scores[i], reverse=True)[:10]
         bm25_jobs = df.iloc[top_bm25_indices]
 
-        # For general job recommendations, use all BM25 jobs without additional filtering
+        # Use all BM25 jobs for general recommendations
         filtered_bm25_jobs = bm25_jobs
 
-        # ChromaDB Search using the Sentence Transformer embedding
+        # ChromaDB Search using Sentence Transformer embeddings
         query_embedding = model.encode(user_query).tolist()
         results = collection.query(query_embeddings=[query_embedding], n_results=10)
 
-        # Extract all results from ChromaDB without filtering by specific skills
+        # Extract all results from ChromaDB
         chroma_jobs = [
             (metadata["job_title"], score)
             for metadata, score in zip(results["metadatas"][0], results["distances"][0])
         ]
 
-        # Combine scores from both BM25 and ChromaDB (adjust weights if needed)
+        # Combine scores (adjust weights as needed)
         combined_jobs = []
         for title, score in chroma_jobs:
             combined_jobs.append((title, 0.3 * score))
         for idx, row in filtered_bm25_jobs.iterrows():
             combined_jobs.append((row["job_title"], 0.7 * bm25_scores[idx]))
 
-        # Sort the jobs based on the combined score and select the top 3
+        # Sort and select the top 3 jobs
         sorted_jobs = sorted(combined_jobs, key=lambda x: x[1], reverse=True)[:3]
 
-        # Format the results context by pulling details from the CSV
+        # Format the job recommendations as an HTML unordered list
         if sorted_jobs:
-            context = "\n".join([
-                f"**{job[0]}**\n- Required Skills: {df[df['job_title'] == job[0]]['professional_skill_required'].values[0]}\n"
-                f"- Salary: {df[df['job_title'] == job[0]]['offered_salary'].values[0]}\n"
-                f"- Deadline: {df[df['job_title'] == job[0]]['deadline'].values[0]}\n"
-                for job in sorted_jobs
-            ])
+            context = "<ul>"
+            for job in sorted_jobs:
+                job_details = df[df['job_title'] == job[0]].iloc[0]
+                context += (
+                    f"<li><strong>{job[0]}</strong><br>"
+                    f"<ul>"
+                    f"<li><strong>Required Skills:</strong> {job_details['professional_skill_required']}</li>"
+                    f"<li><strong>Salary:</strong> {job_details['offered_salary']}</li>"
+                    f"<li><strong>Deadline:</strong> {job_details['deadline']}</li>"
+                    f"</ul></li>"
+                )
+            context += "</ul>"
         else:
-            context = "No relevant jobs were found."
+            context = "<p>No relevant jobs were found.</p>"
 
-        # Construct the refined prompt for the career assistant
+        # Construct the prompt (if needed for further assistant context)
         prompt = (
             "You are a helpful career assistant. Your task is to provide job recommendations.\n"
             f"{context}\n\n"
@@ -120,16 +128,24 @@ def submit():
             "Now, respond to the user's query:"
         )
     else:
-        # For non-job-related queries, simply pass the user query
+        # For non-job queries, simply set the prompt to the user's query
         prompt = user_query
 
-    # Generate Response using Ollama
-    response = ollama.chat(
-        model='llama2',
-        messages=[{'role': 'user', 'content': prompt}]
-    )
+    # Generate response using Ollama (or your language model API)
+    try:
+        response = ollama.chat(
+            model='llama2',
+            messages=[{'role': 'user', 'content': prompt}]
+        )
+        assistant_response = response.get('message', {}).get('content', '')
+    except Exception as e:
+        assistant_response = f"Error generating response: {e}"
 
-    return jsonify(response['message']['content'])
+    # Return JSON with both formatted jobs and assistant response
+    return jsonify({
+        "formatted_jobs": context,
+        "assistant_response": assistant_response
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)
