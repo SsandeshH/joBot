@@ -1,99 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>joBot</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>joBot</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;600;700;800;900&display=swap');
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;600;700;800;900&display=swap');
-
-        *{
-            margin: 0;
-            padding: 0;
-            font-family: "Raleway", sans-serif;
-        }   
-        body{
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            background-color: rgb(27, 26, 26);
-            color: white;
-        }
-
-        header{
-            margin: 10px;
-            border: 1px solid;
-            padding: 10px;
-            border-radius: 50px;
-        }
-
-        header:hover{
-            border-color: black;
-            color: black;
-            background-color: white;
-            transition: all 0.5s ease-in-out;
-        }
-
-        .bodyContents{
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            border-radius: 50px;
-            height: 18vh;
-            width: 80vw;
-            margin-top: 5vh;
-        }
-        .bodyContents:hover{
-            background-color: rgb(48, 48, 48);
-            transition: all 0.3s ease-in;
-        }
-        .text-and-send{
-            margin-top: 10px;
-            border-radius: 50px;
-            display: flex;
-            justify-content:space-evenly;
-            width: 73vw;
-            height: 10vh;
-            background-color: white;
-        }
-        .inp-field{
-            margin: 10px;
-            height: 6vh;
-            width: 55vw;
-            border-radius: 50px;
-            border: none;
-            font-size: x-large;
-        }
-        .inp-field:focus{
-            user-select: none;
-            outline: none;
-        }
-        .send-btn{
-            border-radius: 50px;
-            border: none;
-            background-color: white;
-            font-size: x-large; 
-            /* height: 40%; */
-            
-        }
-    </style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: "Raleway", sans-serif;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      background-color: rgb(27, 26, 26);
+      color: white;
+    }
+    header {
+      margin: 10px;
+      border: 1px solid;
+      padding: 10px;
+      border-radius: 50px;
+    }
+    header:hover {
+      border-color: black;
+      color: black;
+      background-color: white;
+      transition: all 0.5s ease-in-out;
+    }
+    .bodyContents {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      border-radius: 50px;
+      height: 18vh;
+      width: 80vw;
+      margin-top: 5vh;
+    }
+    .bodyContents:hover {
+      background-color: rgb(48, 48, 48);
+      transition: all 0.3s ease-in;
+    }
+    .text-and-send {
+      margin-top: 10px;
+      border-radius: 50px;
+      display: flex;
+      justify-content: space-evenly;
+      width: 73vw;
+      height: 10vh;
+      background-color: white;
+    }
+    .inp-field {
+      margin: 10px;
+      height: 6vh;
+      width: 55vw;
+      border-radius: 50px;
+      border: none;
+      font-size: x-large;
+    }
+    .inp-field:focus {
+      user-select: none;
+      outline: none;
+    }
+    .send-btn {
+      border-radius: 50px;
+      border: none;
+      background-color: white;
+      font-size: x-large;
+    }
+    /* Loading Animation Styles */
+    .loading-animation {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .loader {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #3498db;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .loading-animation p {
+      margin-top: 30px;
+      font-size: 1.2em;
+      color: #3498db;
+    }
+    .response {
+      margin-top: 30px;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h2>joBot</h2>
-    </header>
-    <section class="bodyContents">
-        
-        <h1>Ask Me</h1>
-        <div class="text-and-send">
-            <form action="\submit" method="POST">
-            <input type="text" class="inp-field" name="inp-field">
-            <button class="send-btn" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
-            </form>
-        </div>
-        <p class="response"></p> 
-    </section>
+  <header>
+    <h2>joBot</h2>
+  </header>
+  <section class="bodyContents">
+    <h1>Ask Me</h1>
+    <div class="text-and-send">
+      <form id="queryForm">
+        <input type="text" class="inp-field" name="inp-field" id="inp-field" placeholder="Type your query here..." />
+        <button class="send-btn" type="submit">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+
+    <div class="loading-animation" id="loadingAnimation" style="display: none;">
+      <div class="loader"></div>
+      <p>Loading...</p>
+    </div>
+ 
+    <div class="response" id="responseArea"></div> 
+  </section>
+
+  <script>
+    document.getElementById('queryForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Show loading animation and clear previous response
+      document.getElementById('loadingAnimation').style.display = 'flex';
+      document.getElementById('responseArea').innerHTML = '';
+
+      const userQuery = document.getElementById('inp-field').value;
+
+      fetch('/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `inp-field=${encodeURIComponent(userQuery)}`
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Hide loading animation
+        document.getElementById('loadingAnimation').style.display = 'none';
+        // Build the HTML with the received JSON data
+        const formattedJobs = data.formatted_jobs || '';
+        const assistantResponse = data.assistant_response || '';
+        const htmlContent = `
+          <div>
+            <h3>Job Recommendations:</h3>
+            ${formattedJobs}
+          </div>
+          <div>
+            <h3>Assistant Response:</h3>
+            <p>${assistantResponse}</p>
+          </div>
+        `;
+        document.getElementById('responseArea').innerHTML = htmlContent;
+      })
+      .catch(error => {
+        // Hide loading animation and show error message
+        document.getElementById('loadingAnimation').style.display = 'none';
+        document.getElementById('responseArea').innerHTML = '<p>An error occurred. Please try again.</p>';
+        console.error('Error:', error);
+      });
+    });
+  </script>
 </body>
 </html>
