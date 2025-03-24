@@ -1,0 +1,119 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage{pdfpages} %include pdf
+\usepackage{graphicx} %include images
+\graphicspath{{imgs/}}
+\usepackage{tocloft} %table of content
+\renewcommand{\cftdot}{.} % dots for table of content
+\renewcommand{\cftsecdotsep}{\cftdotsep}
+\usepackage{titlesec} %disecting titles, like Chatpter 1 : Introduction
+\titleformat{\chapter}[hang]{\huge\bfseries}{Chapter \thechapter:}{1em}{}  
+
+
+
+
+\begin{document}
+
+    % Cover Page
+    \includepdf{pdfs/CoverPg.pdf}
+
+    % Table of Contents
+    \tableofcontents
+    \newpage
+
+    % Abstract
+    \begin{center}
+        \section*{Abstract}
+        \addcontentsline{toc}{section}{Abstract}
+    \end{center}
+
+        In developing countries like Nepal, many students who have completed their bachelor's and master's degrees struggle to secure jobs in their respective fields. Despite numerous opportunities, many of these positions often go unnoticed or remain outside their radar.
+
+        Job selection is typically influenced by factors such as expertise, skills, availability, and personal schedules. However, a gap exists between job seekers and suitable opportunities, making it difficult for qualified candidates to find roles that align with their capabilities and preferences.
+
+        The goal of this project is to bridge that gap by connecting job seekers with opportunities that match their qualifications, availability, and skill sets. By ensuring that relevant job openings are easily accessible, this platform will enhance employment prospects and empower individuals to find roles that align with their career aspirations.
+
+        \textbf{joBot} is an AI-powered job search and recommendation chatbot system designed to assist job seekers in navigating the complex job market. Leveraging natural language processing (NLP) and machine learning (ML) algorithms, joBot offers personalized job recommendations tailored to an individual's skills, preferences, and career goals.
+
+        The system allows users to interact seamlessly through a conversational interface, enabling them to:
+        \begin{itemize}
+            \item Search for jobs based on specific keywords and criteria.
+            \item Receive tailored career advice and recommendations.
+            \item Get real-time updates on relevant job opportunities.
+        \end{itemize}
+
+        With its intuitive design and robust AI capabilities, joBot aims to simplify the job search process and empower individuals to make informed career decisions.
+
+        \newpage
+    
+    
+
+    % Acknowledgement
+    \begin{center}
+        \section*{Acknowledgement}
+        \addcontentsline{toc}{section}{Acknowledgement}
+    \end{center}
+    
+
+    The completion of this project would not have been possible without the guidance and support of several individuals. I would like to express my sincere gratitude to:
+    \begin{itemize}
+        \item  \textbf{Mr. Pawan Niroula}, my project supervisor and mentor, for his invaluable guidance, constant encouragement, and valuable feedback throughout the project. His insights and expertise have been instrumental in the success of this project.
+        \item \textbf{Orchid International College}, for providing the resources and infrastructure necessary for the completion of this project.
+
+    \end{itemize}
+    I would also like to thank my friends for their unwavering support and encouragement throughout the project.
+    Finally, I would like to express my gratitude to the online community, open-source libraries and other resources that provided me with the knowledge and tools necessary to complete this project.
+    I am deeply grateful to all of you for your support and contributions throughout my process in making this project possible.
+    \newpage
+
+    \chapter{Introduction}
+        \section{Background}
+        For students completing bachelors and masters but still are not being able to acquire a Job of their field is a major problem, especially in the developing country like Nepal. Despite availability many opportunities, they still might not be on their radar yet. Jobs are usually chosen based on the person’s expertise, schedule , skills etc. The Goal of this project, is to serve the Job Opportunities to the users as per their feasibility and availability IF the job itself is available as per the requests
+
+        \section{Project Definition}
+        Job Search \& Recommendation System is a interactive chatbot which is well trained within the field of Recommendation System. It automates the Job Search through web and interactively answers variety of queries from the user. This leads to Just Serving for what they need, without overwhelming them with too much details until they ask for it. 
+
+        \section{Objectives}
+        The main Objectives of the Job Search \& Recommendation System are as follows:
+        \begin{itemize}
+            \item To present the job opportunities as per requirements with recommendations.
+            \item To uplift the unexplored and freshly updated job providers to anyone in search.
+            \item To Provide a User Friendly Service to search/explore variety of jobs and Recommend and Remind them jobs and their hiring date.
+            
+        \end{itemize}
+
+        \section{Scope}
+        The scope of Job Search \& Recommendation System includes :
+        \begin{itemize}
+            \item   Job Search Functionality : Allowing Users to Search Jobs based on their preferred location, field of expertise, Salary expectations etc.
+            \item Easy Interaction : User can easily ask queries based on the Search Result to the system. User can also directly Upload their CV and make the System Auto Search for Jobs the user would want.
+            \item Recommendation : System recommends based on the user data and Trends on Job Market, User Feasibility, availability etc.
+            \item Reminding System : Reminding User about the Hiring dates of the Jobs and expiry dates of the company’s look for employees.
+        \end{itemize}
+
+        \section{Limitations}
+        The System has the following limitations:
+        \begin{itemize}
+            \item Search Domain : The Project Requires greater investments to filter out the required job information from renowned International sources.
+            \item Time-Consuming : There is considerable amount of time consumption from data fetching to data matching due to hardware as well as programming packages limitations.
+            \item Internet Dependency : Data fetching is done from the internet based on user’s requests.
+            \item Maintenance : Regular Updates are Required to keep the system functional and up to date to the trends.
+            \item Not 100\% accurate : The results may not be 100% accurate as it is a learning model. It grows over time but so does the complications.
+
+        \end{itemize}
+
+        \section{Future Recommendations}
+        The following are future recommendations to the system:
+        \begin{itemize}
+            \item Read CV : The System could have a feature to take cv's PDFs, Images and documents and recommend the job to the user based on their CV.
+            \item Internet Search : The System could not just be limited to Domain
+        \end{itemize}
+        \newpage
+
+        \chapter{Literature Review}
+        \section{Review}
+        Job search and recruitment have evolved significantly with the rise of digital platforms and artificial intelligence (AI). Traditional job search methods, such as newspaper advertisements and manual job applications, have been replaced by AI-driven recommendation systems that match job seekers with suitable opportunities. This literature review explores existing job search platforms, recommendation systems, AI techniques, and challenges in job matchmaking.
+
+        Several online job portals provide job listings and search functionalities, including LinkedIn, Indeed, Glassdoor, and MeroJob. These platforms allow users to filter jobs based on criteria such as job title, location, and experience level. However, they lack personalized recommendations based on users’ skills and preferences. Studies show that traditional job portals rely primarily on keyword-based search rather than \textbf{AI-driven matchmaking}, leading to irrelevant search results (Smith et al., 2020).
+        Artificial Intelligence has transformed job searching by improving matching algorithms and personalized recommendations. Several approaches have been used to enhance job search experiences:
+
+        \end{document}
