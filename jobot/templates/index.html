@@ -158,7 +158,15 @@
       .then(response => response.json())
       .then(data => {
         document.getElementById('typing').remove(); // Remove typing animation
-        const botMessage = data.assistant_response || "I couldn't process your request.";
+        
+        if (!data.assistant_response) {
+          chatContainer.innerHTML += `<div class='message bot-message'><div class='message-text'>I couldn't process your request.</div></div>`;
+          return;
+        }
+
+        // Replace '+' with a newline
+        let botMessage = data.assistant_response.replace(/\+\s?/g, '<br>').replace(/•/g, '<br><br>').replace(/•\s*(.*?)\s*-\s*/g, (match, title) => `• ${capitalizeWords(title)} - `);
+
         chatContainer.innerHTML += `<div class='message bot-message'><div class='message-text'>${botMessage}</div></div>`;
         chatContainer.scrollTop = chatContainer.scrollHeight;
       })

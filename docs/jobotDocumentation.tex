@@ -7,14 +7,15 @@
 \renewcommand{\cftsecdotsep}{\cftdotsep}
 \usepackage{titlesec} %disecting titles, like Chatpter 1 : Introduction
 \titleformat{\chapter}[hang]{\huge\bfseries}{Chapter \thechapter:}{1em}{}  
-
+\usepackage{subcaption}
 
 
 
 \begin{document}
 
     % Cover Page
-    \includepdf{pdfs/CoverPg.pdf}
+    % \includegraphics{cvpage.png}
+    \includepdf{pdfs/cvPage.pdf}
 
     % Table of Contents
     \tableofcontents
@@ -105,15 +106,38 @@
         The following are future recommendations to the system:
         \begin{itemize}
             \item Read CV : The System could have a feature to take cv's PDFs, Images and documents and recommend the job to the user based on their CV.
-            \item Internet Search : The System could not just be limited to Domain
+            \item Internet Search : The System could not just be limited to Domain.
         \end{itemize}
         \newpage
 
+        % literature Review Starts
         \chapter{Literature Review}
         \section{Review}
         Job search and recruitment have evolved significantly with the rise of digital platforms and artificial intelligence (AI). Traditional job search methods, such as newspaper advertisements and manual job applications, have been replaced by AI-driven recommendation systems that match job seekers with suitable opportunities. This literature review explores existing job search platforms, recommendation systems, AI techniques, and challenges in job matchmaking.
 
-        Several online job portals provide job listings and search functionalities, including LinkedIn, Indeed, Glassdoor, and MeroJob. These platforms allow users to filter jobs based on criteria such as job title, location, and experience level. However, they lack personalized recommendations based on users’ skills and preferences. Studies show that traditional job portals rely primarily on keyword-based search rather than \textbf{AI-driven matchmaking}, leading to irrelevant search results (Smith et al., 2020).
+        Several online job portals provide job listings and search functionalities, 
+        including LinkedIn, Indeed, Glassdoor, and MeroJob. These platforms allow users to filter jobs based on criteria such as job title, location, and experience level. However, they lack personalized recommendations based on users’ skills and preferences. Studies show that traditional job portals rely primarily on keyword-based search rather than \textbf{AI-driven matchmaking}, leading to irrelevant search results (Smith et al., 2020).
         Artificial Intelligence has transformed job searching by improving matching algorithms and personalized recommendations. Several approaches have been used to enhance job search experiences:
+        % Literature Review Ends
+        \newline
+    \chapter{System Analysis and Design}
+    \begin{figure}[h]
+        \centering
+        \begin{subfigure}{0.55\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{lvl0.png}
+            \caption{Level 0 DFD}
+            \label{fig:lvl0}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.45\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{lvl1.png}
+            \caption{Level 1 DFD}
+            \label{fig:lvl1}
+        \end{subfigure}
+        \caption{Data Flow Diagrams}
+        \label{fig:dfd}
+    \end{figure}
 
         \end{document}

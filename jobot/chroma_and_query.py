@@ -7,7 +7,7 @@ import pandas as pd
 import nltk
 from nltk.tokenize import word_tokenize
 
-nltk.download('punkt')
+# nltk.download('punkt')
 
 app = Flask(__name__)
 
@@ -21,7 +21,8 @@ try:
         "professional_skill_required", 
         "job_location", 
         "offered_salary", 
-        "deadline"
+        "deadline",
+        "company_name"  # Ensure this column exists for formatting
     ]
     for col in expected_columns:
         if col not in df.columns:
@@ -32,12 +33,12 @@ except Exception as e:
 
 # Create a combined job text for BM25 scoring
 df["job_text"] = (
-    df["job_title"].str.lower() + " " +
-    df["job_category"].str.lower() + " " +
-    df["professional_skill_required"].str.lower() + " " +
-    df["job_location"].str.lower() + " " +
-    df["offered_salary"].str.lower() + " " +
-    df["deadline"].str.lower()
+    df["job_title"] + " " +
+    df["job_category"] + " " +
+    df["professional_skill_required"] + " " +
+    df["job_location"] + " " +
+    df["offered_salary"] + " " +
+    df["deadline"]
 )
 
 # Initialize ChromaDB client and collection
@@ -53,7 +54,7 @@ bm25 = BM25Okapi(tokenized_corpus)
 
 # Simple Intent Classifier to detect job-related queries
 def is_job_related(query):
-    job_keywords = ['job', 'developer', 'engineer', 'hiring', 'position', 'vacancy', 'role']
+    job_keywords = ['job', 'developer', 'engineer', 'hiring', 'position', 'vacancy', 'role', 'payment', 'salary']
     return any(keyword in query.lower() for keyword in job_keywords)
 
 @app.route('/')
@@ -75,28 +76,30 @@ def submit():
         top_bm25_indices = sorted(range(len(bm25_scores)), key=lambda i: bm25_scores[i], reverse=True)[:10]
         bm25_jobs = df.iloc[top_bm25_indices]
 
-        # Use all BM25 jobs for general recommendations
-        filtered_bm25_jobs = bm25_jobs
-
         # ChromaDB Search using Sentence Transformer embeddings
         query_embedding = model.encode(user_query).tolist()
         results = collection.query(query_embeddings=[query_embedding], n_results=10)
 
         # Extract all results from ChromaDB
-        chroma_jobs = [
-            (metadata["job_title"], score)
+        chroma_jobs = {
+            metadata["job_title"]: 0.3 * score
             for metadata, score in zip(results["metadatas"][0], results["distances"][0])
-        ]
+        }
 
-        # Combine scores (adjust weights as needed)
-        combined_jobs = []
-        for title, score in chroma_jobs:
-            combined_jobs.append((title, 0.3 * score))
-        for idx, row in filtered_bm25_jobs.iterrows():
-            combined_jobs.append((row["job_title"], 0.7 * bm25_scores[idx]))
+        # Merge BM25 and ChromaDB results (Ensure uniqueness)
+        job_scores = {}
+        for idx, row in bm25_jobs.iterrows():
+            job_title = row["job_title"]
+            if job_title not in job_scores or bm25_scores[idx] > job_scores[job_title]:
+                job_scores[job_title] = 0.7 * bm25_scores[idx]
+
+        # Combine ChromaDB scores into job_scores
+        for job_title, score in chroma_jobs.items():
+            if job_title not in job_scores or score > job_scores[job_title]:
+                job_scores[job_title] = score
 
         # Sort and select the top 3 jobs
-        sorted_jobs = sorted(combined_jobs, key=lambda x: x[1], reverse=True)[:3]
+        sorted_jobs = sorted(job_scores.items(), key=lambda x: x[1], reverse=True)[:3]
 
         # Format the job recommendations as an HTML unordered list
         if sorted_jobs:
@@ -106,6 +109,7 @@ def submit():
                 context += (
                     f"<li><strong>{job[0]}</strong><br>"
                     f"<ul>"
+                    f"<li><strong>Company:</strong> {job_details['company_name']}</li>"
                     f"<li><strong>Required Skills:</strong> {job_details['professional_skill_required']}</li>"
                     f"<li><strong>Salary:</strong> {job_details['offered_salary']}</li>"
                     f"<li><strong>Deadline:</strong> {job_details['deadline']}</li>"
@@ -115,23 +119,21 @@ def submit():
         else:
             context = "<p>No relevant jobs were found.</p>"
 
-        # Construct the prompt (if needed for further assistant context)
+        # Construct the prompt for Ollama
         prompt = (
-            "You are a helpful career assistant. Your task is to provide job recommendations.\n"
             f"{context}\n\n"
             f"User Query: {user_query}\n\n"
             "Instructions:\n"
             "1. Only list jobs that are specifically relevant to the user's query.\n"
-            "2. For each job, include job title, required skills, salary, and deadline.\n"
+            "2. For each job, include job title, required skills, salary, deadline, and company name.\n"
             "3. Format the response with bullet points for clarity.\n"
-            "4. If no roles are found, politely inform the user.\n\n"
-            "Now, respond to the user's query:"
+            "4. If a response is given, ask what more you can help with.\n\n"
         )
     else:
-        # For non-job queries, simply set the prompt to the user's query
+        # For non-job queries, use the query directly as a prompt
         prompt = user_query
 
-    # Generate response using Ollama (or your language model API)
+    # Generate response using Ollama
     try:
         response = ollama.chat(
             model='llama2',
@@ -141,7 +143,6 @@ def submit():
     except Exception as e:
         assistant_response = f"Error generating response: {e}"
 
-    # Return JSON with both formatted jobs and assistant response
     return jsonify({
         "formatted_jobs": context,
         "assistant_response": assistant_response
