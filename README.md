@@ -4,7 +4,7 @@
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
 
-This is a job portal based chatbot.
+This is a job portal based chatbot. This project tends to solve the repititive and tedious task of users manually looking through multiple websites for job opportunities. This chatbot gives you the relevant jobs according to your queries.
 
 ## Project Organization
 
@@ -59,3 +59,5 @@ This is a job portal based chatbot.
 
 --------
 
+## Demo
+[Watch demo video](https://www.linkedin.com/posts/sandesh-upreti-b44660329_a-job-specific-chatbot-development-on-progress-activity-7312090286220845056-AtRf?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFLbRGQB6zV4IzizmDzNria5TQ77NdlD9gg)
